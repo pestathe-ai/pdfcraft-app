@@ -611,6 +611,20 @@ for fn, add in (('messages/en.json', add_en), ('messages/it.json', add_it)):
         pl.setdefault(k2, v2)
     write(fn, json.dumps(d, ensure_ascii=False, indent=2) + '\n')
 
+# ---------------------------------------------------------------- titolo italiano mancante (Oscura PDF)
+rep('src/config/tool-content/index.ts', """  // Fallback to English
+  return toolContentEn[toolId];""", """  // Titoli italiani mancanti nella versione originale
+  if (locale === 'it' && toolId === 'redact-pdf' && toolContentEn[toolId]) {
+    return {
+      ...toolContentEn[toolId],
+      title: 'Oscura PDF',
+      metaDescription: 'Nascondi per sempre testi e immagini sensibili: nero, bianco, mosaico o sfocatura.',
+    };
+  }
+
+  // Fallback to English
+  return toolContentEn[toolId];""")
+
 # ---------------------------------------------------------------- esito
 if errors:
     print('ERRORI applicando la modalità app:')

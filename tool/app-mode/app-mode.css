@@ -27,7 +27,7 @@
 [data-app] [data-testid="tool-page-interface"] .grid > * {
   min-width: 0;
 }
-[data-app] [data-testid="tool-page-interface"] img,
+[data-app] [data-testid="tool-page-interface"] img:not(.cropper-container img),
 [data-app] [data-testid="tool-page-interface"] video {
   max-width: 100%;
   height: auto;
@@ -110,7 +110,7 @@
   display: none;
 }
 /* Anteprime: mai più larghe dello schermo; contenuti centrati non vengono tagliati a sinistra */
-[data-app] [data-testid="tool-page-interface"] canvas:not([style*="width"]) {
+[data-app] [data-testid="tool-page-interface"] canvas:not([style*="width"]):not(.cropper-container canvas) {
   max-width: 100%;
   height: auto;
 }
@@ -163,4 +163,9 @@
 [data-app] [data-tools-page] [aria-label="Filter by category"] > button {
   flex: 0 0 auto;
   white-space: nowrap;
+}
+/* Barre con molti pulsanti: vanno a capo */
+[data-app] [data-testid="tool-page-interface"] .flex:has(> button:nth-of-type(4)),
+[data-app] [data-testid="tool-page-interface"] .inline-flex:has(> button:nth-of-type(4)) {
+  flex-wrap: wrap;
 }
