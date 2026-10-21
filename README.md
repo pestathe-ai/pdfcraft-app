@@ -16,7 +16,9 @@ OCR e molto altro. Tutto gira **sul telefono**: i tuoi file non vengono caricati
 - Il pulsante "Indietro" torna alla pagina precedente.
 
 ## Limiti noti
-- L'APK è grande (tutti gli strumenti e 18 lingue sono inclusi per funzionare offline).
+- L'APK è grande (circa 200 MB): tutti gli strumenti sono inclusi per funzionare offline.
+- Lingue incluse: solo **italiano** e **inglese** (le altre 16 pesavano ~1 GB). Scegliere un'altra
+  lingua dal menu del sito porta a una pagina "non trovata".
 - Gli strumenti di conversione Office (Word/Excel/PowerPoint ↔ PDF) usano LibreOffice in WebAssembly:
   sono pesanti e richiedono una funzione del browser (SharedArrayBuffer) che nel WebView di Android
   potrebbe non essere disponibile. Se non partono, è questo il motivo.
