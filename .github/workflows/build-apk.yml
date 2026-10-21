@@ -1,0 +1,84 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      BUILD_NUMBER: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+
+      - name: Compila il sito PDFCraft
+        run: |
+          set -o pipefail
+          chmod +x tool/build_web.sh
+          if ! ./tool/build_web.sh 2>&1 | tee web.log; then
+            grep -n -i -E 'error|failed|exception|cannot|not found|Type error' web.log | tail -40 \
+              | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}' > err.txt
+            echo "::error title=web::$(cat err.txt)"
+            exit 1
+          fi
+          echo "::notice title=web::$(tail -1 web.log)"
+
+      - name: Test unitari
+        run: |
+          set -o pipefail
+          if ! gradle -p android --no-daemon testReleaseUnitTest 2>&1 | tee test.log; then
+            grep -n -i -E 'error|what went wrong|failed|exception|expected|e: ' test.log | tail -40 \
+              | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}' > err.txt
+            echo "::error title=test::$(cat err.txt)"
+            exit 1
+          fi
+
+      - name: Compila APK
+        run: |
+          set -o pipefail
+          if ! gradle -p android --no-daemon assembleRelease 2>&1 | tee apk.log; then
+            grep -n -i -E 'error|what went wrong|failed|exception|e: ' apk.log | tail -40 \
+              | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}' > err.txt
+            echo "::error title=apk::$(cat err.txt)"
+            exit 1
+          fi
+
+      - name: Firma APK
+        run: |
+          set -euo pipefail
+          BT="$(ls -d $ANDROID_HOME/build-tools/*/ | sort -V | tail -1)"
+          IN=android/app/build/outputs/apk/release/app-release-unsigned.apk
+          "${BT}zipalign" -p -f 4 "$IN" aligned.apk
+          "${BT}apksigner" sign --ks tool/signing/app.jks --ks-key-alias app \
+            --ks-pass pass:mj7BMEWQC3FcHK3kCB2a --key-pass pass:mj7BMEWQC3FcHK3kCB2a \
+            --out PDFCraft.apk aligned.apk
+          "${BT}apksigner" verify PDFCraft.apk
+          echo "::notice title=apk::PDFCraft.apk $(du -h PDFCraft.apk | cut -f1)"
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: PDFCraft per Android (build ${{ github.run_number }})
+          files: PDFCraft.apk
+          body: |
+            Scarica **PDFCraft.apk** dal telefono e installalo.
+            Basato su PDFCraft (PDFCraftTool/pdfcraft) alla versione indicata in UPSTREAM_REF.
