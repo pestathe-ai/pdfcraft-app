@@ -625,6 +625,45 @@ rep('src/config/tool-content/index.ts', """  // Fallback to English
   // Fallback to English
   return toolContentEn[toolId];""")
 
+# ---------------------------------------------------------------- Firma col dito (nuova modalità)
+S = 'src/components/tools/sign/SignPDFTool.tsx'
+add_import(S, "import { FingerSign } from '@/components/app/FingerSign';")
+rep(S, "  const uiLocale = useLocale();\n",
+    "  const uiLocale = useLocale();\n  const [fingerMode, setFingerMode] = useState(true);\n")
+rep(S, "      {/* PDF Viewer (app: schermo intero) */}\n      {signState.file && APP_MODE && (",
+    "      {/* Firma col dito (app) */}\n"
+    "      {signState.file && APP_MODE && fingerMode && (\n"
+    "        <FingerSign file={signState.file} onClose={handleClear} locale={uiLocale} />\n"
+    "      )}\n\n"
+    "      {/* PDF Viewer (app: schermo intero) */}\n      {signState.file && APP_MODE && !fingerMode && (")
+rep(S, "      {/* File Upload Area - Only show when no file */}", """      {/* Scelta della modalità di firma (app) */}
+      {APP_MODE && !signState.file && (
+        <div className="grid grid-cols-2 gap-2 rounded-2xl bg-[hsl(var(--color-muted))] p-1" role="radiogroup">
+          <button
+            type="button"
+            role="radio"
+            aria-checked={fingerMode}
+            onClick={() => setFingerMode(true)}
+            className={`rounded-xl px-3 py-3 text-left ${fingerMode ? 'bg-[hsl(var(--color-background))] shadow' : ''}`}
+          >
+            <span className="block text-sm font-semibold">✍️ {uiLocale === 'it' ? 'Col dito' : 'With finger'}</span>
+            <span className="block text-xs text-[hsl(var(--color-muted-foreground))]">{uiLocale === 'it' ? 'Firma sullo schermo e posizionala' : 'Draw on screen and place it'}</span>
+          </button>
+          <button
+            type="button"
+            role="radio"
+            aria-checked={!fingerMode}
+            onClick={() => setFingerMode(false)}
+            className={`rounded-xl px-3 py-3 text-left ${!fingerMode ? 'bg-[hsl(var(--color-background))] shadow' : ''}`}
+          >
+            <span className="block text-sm font-semibold">🧰 {uiLocale === 'it' ? 'Avanzata' : 'Advanced'}</span>
+            <span className="block text-xs text-[hsl(var(--color-muted-foreground))]">{uiLocale === 'it' ? 'Testo, firme salvate, timbri' : 'Text, saved signatures, stamps'}</span>
+          </button>
+        </div>
+      )}
+
+      {/* File Upload Area - Only show when no file */}""")
+
 # ---------------------------------------------------------------- esito
 if errors:
     print('ERRORI applicando la modalità app:')

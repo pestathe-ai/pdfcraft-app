@@ -9,6 +9,11 @@ OCR e molto altro. Tutto gira **sul telefono**: i tuoi file non vengono caricati
 2. Apri il file scaricato → consenti l'installazione da questa fonte → **Installa**
    (se Play Protect avvisa: *Installa comunque*).
 
+## Novità 0.3
+- **Firma col dito** (in *Firma PDF*, modalità predefinita): disegni la firma sullo schermo, tocchi la pagina
+  per posizionarla, la sposti e ridimensioni col dito, aggiungi se vuoi la data di oggi e salvi.
+  Le firme disegnate vengono ricordate per la volta successiva. La modalità *Avanzata* resta disponibile.
+
 ## Novità 0.2
 - **Interfaccia da app**: home con azioni rapide, barra in basso (Home · Converti · Strumenti), pagine strumento compatte senza testi promozionali.
 - **Converti**: scegli un file qualsiasi, il formato si riconosce da solo e si apre il convertitore giusto con il file già caricato. Per i PDF propone in cosa convertirli.
