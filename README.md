@@ -1,13 +1,20 @@
-# PDFCraft per Android
+# D. Docs lab
 
-App Android che contiene **PDFCraft** ([PDFCraftTool/pdfcraft](https://github.com/PDFCraftTool/pdfcraft)),
+*un'app **Dom Studio***
+
+
+App Android basata su **PDFCraft** ([PDFCraftTool/pdfcraft](https://github.com/PDFCraftTool/pdfcraft)),
 il kit di strumenti PDF open source: unire, dividere, comprimere, ruotare, convertire, firmare,
 OCR e molto altro. Tutto gira **sul telefono**: i tuoi file non vengono caricati su nessun server.
 
 ## Installazione
-1. Dal telefono apri l'ultima release in *Releases* e scarica **PDFCraft.apk**.
+1. Dal telefono apri l'ultima release in *Releases* e scarica **DDocsLab.apk**.
 2. Apri il file scaricato → consenti l'installazione da questa fonte → **Installa**
    (se Play Protect avvisa: *Installa comunque*).
+
+## Novità 0.4
+- Nuovo nome **D. Docs lab** e nuova icona (marchio **Dom Studio**, stile "Domus": la casa dei documenti).
+- Colori del marchio nell'interfaccia; i file salvati vanno in **Download › D. Docs lab**.
 
 ## Novità 0.3
 - **Firma col dito** (in *Firma PDF*, modalità predefinita): disegni la firma sullo schermo, tocchi la pagina
@@ -27,7 +34,7 @@ Le modifiche al sito sono in `tool/app-mode/` e vengono applicate a PDFCraft ori
 ## Come funziona
 - Il sito di PDFCraft viene compilato in CI (versione fissata in `UPSTREAM_REF`) e messo dentro l'APK.
 - Un piccolo "server interno" (`AssetServer.kt`) lo serve al WebView con le intestazioni giuste.
-- Quando uno strumento produce un file, l'app lo salva in **Download › PDFCraft** e propone *Apri* o *Condividi*.
+- Quando uno strumento produce un file, l'app lo salva in **Download › D. Docs lab** e propone *Apri* o *Condividi*.
 - Il pulsante "Indietro" torna alla pagina precedente.
 
 ## Limiti noti

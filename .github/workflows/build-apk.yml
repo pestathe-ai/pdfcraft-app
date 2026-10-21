@@ -70,15 +70,15 @@ jobs:
           "${BT}zipalign" -p -f 4 "$IN" aligned.apk
           "${BT}apksigner" sign --ks tool/signing/app.jks --ks-key-alias app \
             --ks-pass pass:mj7BMEWQC3FcHK3kCB2a --key-pass pass:mj7BMEWQC3FcHK3kCB2a \
-            --out PDFCraft.apk aligned.apk
-          "${BT}apksigner" verify PDFCraft.apk
-          echo "::notice title=apk::PDFCraft.apk $(du -h PDFCraft.apk | cut -f1)"
+            --out DDocsLab.apk aligned.apk
+          "${BT}apksigner" verify DDocsLab.apk
+          echo "::notice title=apk::DDocsLab.apk $(du -h DDocsLab.apk | cut -f1)"
 
       - name: Analisi dimensioni APK
         run: |
           python3 - <<'PY' > sizes.txt
           import zipfile, collections
-          z = zipfile.ZipFile('PDFCraft.apk')
+          z = zipfile.ZipFile('DDocsLab.apk')
           raw = collections.Counter(); packed = collections.Counter(); stored = collections.Counter()
           for i in z.infolist():
               name = i.filename.split('/')[-1]
@@ -93,8 +93,8 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
-          name: PDFCraft per Android (build ${{ github.run_number }})
-          files: PDFCraft.apk
+          name: D. Docs lab (build ${{ github.run_number }})
+          files: DDocsLab.apk
           body: |
-            Scarica **PDFCraft.apk** dal telefono e installalo.
+            Scarica **DDocsLab.apk** dal telefono e installalo. D. Docs lab è un'app Dom Studio.
             Basato su PDFCraft (PDFCraftTool/pdfcraft) alla versione indicata in UPSTREAM_REF.

@@ -5,6 +5,11 @@
    =================================================================== */
 [data-app] {
   -webkit-tap-highlight-color: transparent;
+  /* Colori del marchio Dom Studio: blu casa e arancio tetto */
+  --color-primary: 224 63% 42%;
+  --color-primary-hover: 224 65% 33%;
+  --color-ring: 224 63% 42%;
+  --color-accent: 28 88% 58%;
 }
 /* Spazio per la barra di navigazione in basso */
 [data-app] main {

@@ -287,7 +287,7 @@ class MainActivity : ComponentActivity() {
             val request = DownloadManager.Request(Uri.parse(url))
                 .setMimeType(mimeType)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "PDFCraft/$name")
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "D. Docs lab/$name")
             (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
             Toast.makeText(this, "Download avviato: $name", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
@@ -299,7 +299,7 @@ class MainActivity : ComponentActivity() {
         if (isFinishing || isDestroyed) return
         AlertDialog.Builder(this)
             .setTitle("File salvato")
-            .setMessage("$name\n\nSi trova in Download › PDFCraft.")
+            .setMessage("$name\n\nSi trova in Download › D. Docs lab.")
             .setPositiveButton("Apri") { _, _ ->
                 val intent = Intent(Intent.ACTION_VIEW).setDataAndType(uri, mime)
                     .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

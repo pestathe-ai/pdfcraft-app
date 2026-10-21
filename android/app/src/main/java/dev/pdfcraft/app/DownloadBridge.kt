@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Riceve dal sito i file prodotti (PDF, immagini, zip...) a pezzi in base64
- * e li salva nella cartella Download/PDFCraft del telefono.
+ * e li salva nella cartella Download/D. Docs lab del telefono.
  * Esposto a JavaScript come window.PDFCraftAndroid.
  */
 class DownloadBridge(private val activity: MainActivity) {
@@ -84,7 +84,7 @@ class DownloadBridge(private val activity: MainActivity) {
         val values = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, mime)
-            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/PDFCraft")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/D. Docs lab")
             put(MediaStore.MediaColumns.IS_PENDING, 1)
         }
         val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)

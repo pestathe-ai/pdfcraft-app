@@ -7,6 +7,7 @@ import { FavoriteToolsSection } from '@/components/tools/FavoriteToolsSection';
 import { getToolById } from '@/config/tools';
 import { getToolIcon } from '@/config/icons';
 import type { Locale } from '@/lib/i18n/config';
+import { AppBrandMark, BRAND } from '@/components/app/AppBrandMark';
 
 const QUICK: { slug: string; it: string; en: string }[] = [
   { slug: 'edit-pdf', it: 'Modifica', en: 'Edit' },
@@ -100,6 +101,17 @@ export function AppHome({
             <Lock className="h-3.5 w-3.5 text-green-600" aria-hidden="true" />
             {it ? 'I file restano sul telefono: nulla viene caricato online.' : 'Files stay on your phone: nothing is uploaded.'}
           </p>
+
+          <div className="mt-10 flex flex-col items-center gap-2 text-center">
+            <AppBrandMark size={44} />
+            <p className="text-sm font-semibold text-[hsl(var(--color-foreground))]">{BRAND.app}</p>
+            <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
+              {it ? "un'app" : 'an app by'} <span className="font-semibold">{BRAND.studio}</span>
+            </p>
+            <p className="text-[11px] text-[hsl(var(--color-muted-foreground))]">
+              {it ? 'Basata su PDFCraft, software libero (AGPL-3.0)' : 'Based on PDFCraft, free software (AGPL-3.0)'}
+            </p>
+          </div>
         </div>
       </main>
     </div>

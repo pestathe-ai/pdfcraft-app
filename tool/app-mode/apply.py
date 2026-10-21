@@ -664,6 +664,24 @@ rep(S, "      {/* File Upload Area - Only show when no file */}", """      {/* S
 
       {/* File Upload Area - Only show when no file */}""")
 
+# ---------------------------------------------------------------- Marchio: D. Docs lab · Dom Studio
+H = 'src/components/layout/Header.tsx'
+add_import(H, "import { AppBrandMark, BRAND } from '@/components/app/AppBrandMark';")
+s = read(H)
+start = s.find('              <div className="relative flex h-9 w-9')
+end_anchor = """                </svg>
+              </div>
+              <span className="text-xl tracking-tight" data-testid="brand-name">
+                {t('brand')}"""
+end = s.find(end_anchor)
+if start < 0 or end < 0:
+    errors.append(f'{H}: logo non trovato')
+else:
+    close = end + len("                </svg>\n              </div>")
+    s = (s[:start] + "              {APP_MODE ? <AppBrandMark size={36} /> : (\n" + s[start:close] + ")}"
+         + s[close:].replace("                {t('brand')}", "                {APP_MODE ? BRAND.app : t('brand')}", 1))
+    write(H, s)
+
 # ---------------------------------------------------------------- esito
 if errors:
     print('ERRORI applicando la modalità app:')
