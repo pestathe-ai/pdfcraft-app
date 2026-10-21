@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        server = AssetServer(assets)
+        server = AssetServer(assets, SharedFiles.root(this))
         hookScript = assets.open("bridge/download-hook.js").bufferedReader().use { it.readText() }
 
         webView = WebView(this)
@@ -79,6 +79,18 @@ class MainActivity : ComponentActivity() {
         }
 
         webView.addJavascriptInterface(DownloadBridge(this), "PDFCraftAndroid")
+
+        // Permette al sito interno di usare SharedArrayBuffer (motore LibreOffice per Word/ODT/Excel/PowerPoint).
+        // Disponibile solo con versioni recenti di "Android System WebView".
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.CROSS_ORIGIN_ISOLATED_ALLOWLIST) &&
+            WebViewFeature.isFeatureSupported(WebViewFeature.MULTI_PROFILE)
+        ) {
+            try {
+                WebViewCompat.getProfile(webView).setCrossOriginIsolatedAllowlist(setOf(AssetServer.ORIGIN))
+            } catch (e: Exception) {
+                // Funzione non disponibile: si useranno i convertitori di riserva.
+            }
+        }
 
         if (WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
             WebViewCompat.addDocumentStartJavaScript(webView, hookScript, setOf(AssetServer.ORIGIN))
@@ -184,21 +196,59 @@ class MainActivity : ComponentActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (webView.canGoBack()) {
-                    webView.goBack()
-                } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
+                // Prima chiediamo alla pagina (es. chiudere un editor a schermo intero).
+                webView.evaluateJavascript(
+                    "(window.__pdfcraftAppBack && window.__pdfcraftAppBack()) ? '1' : '0'"
+                ) { result ->
+                    if (result?.contains("1") == true) return@evaluateJavascript
+                    if (webView.canGoBack()) {
+                        webView.goBack()
+                    } else {
+                        isEnabled = false
+                        onBackPressedDispatcher.onBackPressed()
+                    }
                 }
             }
         })
 
+        SharedFiles.cleanup(this)
         if (savedInstanceState != null) {
             webView.restoreState(savedInstanceState)
-        } else {
-            val lang = if (java.util.Locale.getDefault().language == "it") "it" else "en"
+        } else if (!handleIncoming(intent)) {
             webView.loadUrl("${AssetServer.ORIGIN}/$lang/")
         }
+    }
+
+    private val lang: String
+        get() = if (java.util.Locale.getDefault().language == "it") "it" else "en"
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIncoming(intent)
+    }
+
+    /** File aperti o condivisi da altre app: li passa alla pagina "Converti". */
+    private fun handleIncoming(intent: Intent?): Boolean {
+        val uris = SharedFiles.urisFrom(intent)
+        if (uris.isEmpty()) return false
+        Toast.makeText(this, "Apro il file…", Toast.LENGTH_SHORT).show()
+        Thread {
+            val id = try {
+                SharedFiles.stage(this, uris)
+            } catch (e: Exception) {
+                null
+            }
+            runOnUiThread {
+                if (id != null) {
+                    webView.loadUrl("${AssetServer.ORIGIN}/$lang/convert/?shared=$id")
+                } else {
+                    Toast.makeText(this, "Impossibile leggere il file", Toast.LENGTH_LONG).show()
+                    if (webView.url == null) webView.loadUrl("${AssetServer.ORIGIN}/$lang/")
+                }
+            }
+        }.start()
+        return true
     }
 
     /** true = navigazione gestita da noi (non caricarla nel WebView). */

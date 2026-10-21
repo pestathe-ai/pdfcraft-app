@@ -4,6 +4,8 @@ import android.content.res.AssetManager
 import android.net.Uri
 import android.webkit.WebResourceResponse
 import java.io.ByteArrayInputStream
+import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 import java.util.zip.GZIPInputStream
@@ -13,7 +15,7 @@ import java.util.zip.GZIPInputStream
  * un vero server web, con le intestazioni che il sito si aspetta
  * (COOP/COEP per la conversione Office, tipi MIME corretti, ecc.).
  */
-class AssetServer(private val assets: AssetManager) {
+class AssetServer(private val assets: AssetManager, private val sharedRoot: File) {
 
     companion object {
         const val HOST = "appassets.androidplatform.net"
@@ -25,6 +27,9 @@ class AssetServer(private val assets: AssetManager) {
         val path = url.path ?: "/"
         val isRsc = requestHeaders?.keys?.any { it.equals("RSC", ignoreCase = true) } == true ||
             url.getQueryParameter("_rsc") != null
+
+        // File condivisi da altre app (vedi SharedFiles)
+        if (path.startsWith("/__shared/")) return serveShared(path)
 
         for (candidate in AssetPaths.candidates(path)) {
             val full = "${AssetPaths.ROOT}/$candidate"
@@ -60,6 +65,9 @@ class AssetServer(private val assets: AssetManager) {
         "Cross-Origin-Opener-Policy" to "same-origin",
         "Cross-Origin-Embedder-Policy" to "require-corp",
         "Cross-Origin-Resource-Policy" to "cross-origin",
+        // Con l'allowlist del WebView (vedi MainActivity) rende la pagina "cross-origin isolated":
+        // serve a LibreOffice (conversioni Word/ODT/Excel/PowerPoint).
+        "Document-Isolation-Policy" to "isolate-and-require-corp",
         "Access-Control-Allow-Origin" to "*",
         "Cache-Control" to "no-cache",
         "X-Content-Type-Options" to "nosniff",
@@ -89,6 +97,19 @@ class AssetServer(private val assets: AssetManager) {
             headers,
             body,
         )
+    }
+
+    private fun serveShared(path: String): WebResourceResponse {
+        val parts = path.removePrefix("/__shared/").split('/')
+        if (parts.size != 2 || !parts[0].matches(Regex("[A-Za-z0-9-]+")) || !parts[1].matches(Regex("[A-Za-z0-9._-]+"))) {
+            return notFound()
+        }
+        val f = File(File(sharedRoot, parts[0]), parts[1])
+        if (!f.isFile) return notFound()
+        val mime = if (parts[1].endsWith(".json")) "application/json" else "application/octet-stream"
+        val headers = baseHeaders()
+        headers["Content-Length"] = f.length().toString()
+        return WebResourceResponse(mime, null, 200, "OK", headers, FileInputStream(f))
     }
 
     private fun notFound(): WebResourceResponse {

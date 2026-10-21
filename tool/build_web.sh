@@ -17,10 +17,18 @@ git -c protocol.version=2 fetch -q --depth 1 origin "$REF"
 git checkout -q FETCH_HEAD
 echo "PDFCraft $(git rev-parse --short HEAD)"
 
+# Modifiche per il telefono (interfaccia "app", Converti, ODT, editor a schermo intero...)
+for p in "$ROOT"/patches/*.patch; do
+  [ -e "$p" ] || continue
+  echo "Applico $(basename "$p")"
+  git apply --whitespace=nowarn "$p"
+done
+
 # DOCKER_BUILD=true: niente copie decompresse di LibreOffice (+250 MB) e niente file
 # spezzati in pezzi; l'app decomprime al volo i .gz.
 export DOCKER_BUILD=true
 export DISABLE_UPDATE_CHECK=true
+export NEXT_PUBLIC_APP_MODE=android
 export NEXT_TELEMETRY_DISABLED=1
 export NODE_OPTIONS="--max-old-space-size=6144"
 export APP_VERSION="android-$(git rev-parse --short HEAD)"
