@@ -9,6 +9,16 @@ OCR e molto altro. Tutto gira **sul telefono**: i tuoi file non vengono caricati
 2. Apri il file scaricato → consenti l'installazione da questa fonte → **Installa**
    (se Play Protect avvisa: *Installa comunque*).
 
+## Novità 0.2
+- **Interfaccia da app**: home con azioni rapide, barra in basso (Home · Converti · Strumenti), pagine strumento compatte senza testi promozionali.
+- **Converti**: scegli un file qualsiasi, il formato si riconosce da solo e si apre il convertitore giusto con il file già caricato. Per i PDF propone in cosa convertirli.
+- **Apri con / Condividi**: da qualsiasi app puoi aprire o condividere un documento con PDFCraft.
+- **Editor a schermo intero**: Modifica PDF, Firma, Timbri e Lettore occupano tutto lo schermo; il tasto Indietro li chiude.
+- **ODT**: conversione completa con LibreOffice se il WebView lo permette (Android System WebView recente), altrimenti convertitore di riserva integrato.
+- Testi cinesi rimasti nell'originale tradotti (Firma, Oscura PDF); pulsanti più grandi, niente contenuti fuori schermo.
+
+Le modifiche al sito sono in `tool/app-mode/` e vengono applicate a PDFCraft originale ad ogni build.
+
 ## Come funziona
 - Il sito di PDFCraft viene compilato in CI (versione fissata in `UPSTREAM_REF`) e messo dentro l'APK.
 - Un piccolo "server interno" (`AssetServer.kt`) lo serve al WebView con le intestazioni giuste.
@@ -19,9 +29,10 @@ OCR e molto altro. Tutto gira **sul telefono**: i tuoi file non vengono caricati
 - L'APK è grande (circa 200 MB): tutti gli strumenti sono inclusi per funzionare offline.
 - Lingue incluse: solo **italiano** e **inglese** (le altre 16 pesavano ~1 GB). Scegliere un'altra
   lingua dal menu del sito porta a una pagina "non trovata".
-- Gli strumenti di conversione Office (Word/Excel/PowerPoint ↔ PDF) usano LibreOffice in WebAssembly:
-  sono pesanti e richiedono una funzione del browser (SharedArrayBuffer) che nel WebView di Android
-  potrebbe non essere disponibile. Se non partono, è questo il motivo.
+- Le conversioni DOC, RTF, Excel e PowerPoint usano LibreOffice in WebAssembly: servono un WebView
+  recente (che permetta SharedArrayBuffer) e un po' di memoria. ODT e DOCX hanno comunque un convertitore di riserva.
+- Il convertitore ODT di riserva produce pagine come immagini (testo non selezionabile) e un'impaginazione semplificata.
+- Alcuni testi minori dell'originale sono ancora in inglese.
 - Alcune funzioni facoltative (es. lingue extra per l'OCR) scaricano dati da internet la prima volta.
 
 ## Licenza
