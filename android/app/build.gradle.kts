@@ -24,10 +24,10 @@ android {
         }
     }
 
-    // File già compressi o molto grandi: niente compressione, così si leggono più in fretta
-    // e se ne conosce la dimensione (barra di avanzamento nel sito).
+    // Nota: gli asset .gz vengono decompressi automaticamente durante la build (soffice.*.bin):
+    // vanno lasciati comprimere dall'APK, altrimenti occupano 235 MB.
     androidResources {
-        noCompress += listOf("wasm", "whl", "gz", "data", "bin", "woff2", "zip", "traineddata")
+        noCompress += listOf("woff2", "zip")
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
     }
 
