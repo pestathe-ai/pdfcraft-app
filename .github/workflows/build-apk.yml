@@ -74,6 +74,22 @@ jobs:
           "${BT}apksigner" verify PDFCraft.apk
           echo "::notice title=apk::PDFCraft.apk $(du -h PDFCraft.apk | cut -f1)"
 
+      - name: Analisi dimensioni APK
+        run: |
+          python3 - <<'PY' > sizes.txt
+          import zipfile, collections
+          z = zipfile.ZipFile('PDFCraft.apk')
+          raw = collections.Counter(); packed = collections.Counter(); stored = collections.Counter()
+          for i in z.infolist():
+              name = i.filename.split('/')[-1]
+              ext = name.rsplit('.', 1)[-1] if '.' in name else '-'
+              raw[ext] += i.file_size; packed[ext] += i.compress_size
+              if i.compress_type == 0: stored[ext] += 1
+          for ext, size in packed.most_common(15):
+              print(f"{ext}: {raw[ext]>>20}MB -> {size>>20}MB (non compressi: {stored[ext]})")
+          PY
+          echo "::notice title=sizes::$(sed 's/%/%25/g' sizes.txt | awk 'BEGIN{ORS="%0A"} {print}')"
+
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
