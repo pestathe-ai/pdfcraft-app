@@ -18,11 +18,7 @@ git checkout -q FETCH_HEAD
 echo "PDFCraft $(git rev-parse --short HEAD)"
 
 # Modifiche per il telefono (interfaccia "app", Converti, ODT, editor a schermo intero...)
-for p in "$ROOT"/patches/*.patch; do
-  [ -e "$p" ] || continue
-  echo "Applico $(basename "$p")"
-  git apply --whitespace=nowarn "$p"
-done
+python3 "$ROOT/tool/app-mode/apply.py" "$SRC"
 
 # DOCKER_BUILD=true: niente copie decompresse di LibreOffice (+250 MB) e niente file
 # spezzati in pezzi; l'app decomprime al volo i .gz.
