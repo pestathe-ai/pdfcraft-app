@@ -31,6 +31,8 @@ npm run build
 rm -rf "$DEST"
 mkdir -p "$DEST"
 cp -a out/. "$DEST/"
+# Ogni lingua occupa ~60 MB di pagine: teniamo solo italiano e inglese.
+for loc in ar cs de es fr he hi id ja ko pl pt ro vi zh zh-TW; do rm -rf "$DEST/$loc"; done
 # Le mappe dei sorgenti servono solo a chi sviluppa: le togliamo per alleggerire l'APK.
 find "$DEST" -name '*.map' -delete
 

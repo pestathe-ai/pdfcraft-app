@@ -196,7 +196,8 @@ class MainActivity : ComponentActivity() {
         if (savedInstanceState != null) {
             webView.restoreState(savedInstanceState)
         } else {
-            webView.loadUrl(AssetServer.START_URL)
+            val lang = if (java.util.Locale.getDefault().language == "it") "it" else "en"
+            webView.loadUrl("${AssetServer.ORIGIN}/$lang/")
         }
     }
 

@@ -18,7 +18,6 @@ class AssetServer(private val assets: AssetManager) {
     companion object {
         const val HOST = "appassets.androidplatform.net"
         const val ORIGIN = "https://$HOST"
-        const val START_URL = "$ORIGIN/"
     }
 
     fun handle(url: Uri, method: String?, requestHeaders: Map<String, String>?): WebResourceResponse? {
