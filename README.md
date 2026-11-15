@@ -12,6 +12,22 @@ OCR e molto altro. Tutto gira **sul telefono**: i tuoi file non vengono caricati
 2. Apri il file scaricato → consenti l'installazione da questa fonte → **Installa**
    (se Play Protect avvisa: *Installa comunque*).
 
+## Novità 0.6
+- **Compila modulo rifatto sul modello di Adobe Fill & Sign e Xodo**:
+  - **scrivi direttamente sul foglio**: il cursore compare nel campo e sopra la tastiera c'è una barra con
+    ▲ ▼ per passare al campo precedente o successivo, il nome del campo e *Fatto*;
+  - **zoom fluido** col pizzico (come nei lettori PDF), doppio tocco per ingrandire o tornare alla pagina intera;
+    ingrandisce da solo quando il testo sarebbe troppo piccolo;
+  - **tocca un punto vuoto per scrivere** dove non c'è un campo; il testo si sposta con la maniglia ✥;
+  - strumenti in basso: **Testo, Spunta ✓, Croce ✗, Punto ●, Linea, Firma** (le firme salvate si riusano con un tocco);
+  - menu sull'elemento selezionato: **A− A+** (dimensione), cambio segno ✓/✗/●, elimina; **Annulla** in alto;
+  - **Profilo**: nome, cognome, codice fiscale, nascita, indirizzo, telefono, email… Restano sul telefono,
+    vengono proposti sopra la tastiera nei campi giusti e con *Riempi* compili tutto il modulo in un colpo.
+    Quello che scrivi nei moduli viene ricordato da solo;
+  - pulsante **Avanti** che porta al prossimo campo ancora vuoto; caselle spuntate con un tocco
+    (pressione lunga per cambiare segno o togliere un riquadro trovato per sbaglio);
+  - testo in blu "penna", identico nell'anteprima e nel PDF salvato.
+
 ## Novità 0.5
 - **Compila modulo rifatto per il telefono**: il documento si vede a tutto schermo, si ingrandisce col pizzico,
   col doppio tocco o con i pulsanti, e gli spazi da compilare sono evidenziati in giallo.
