@@ -198,7 +198,7 @@ rep('src/app/[locale]/tools/ToolsPageClient.tsx',
 
 # ---------------------------------------------------------------- Modifica PDF a schermo intero
 E = 'src/components/tools/edit-pdf/EditPDFTool.tsx'
-add_import(E, "import { APP_MODE } from '@/lib/app-mode';\nimport { AppFullscreen } from '@/components/app/AppFullscreen';")
+add_import(E, "import { APP_MODE } from '@/lib/app-mode';\nimport { AppFullscreen } from '@/components/app/AppFullscreen';\nimport { FormFillHint, OpenInFormFillButton } from '@/components/app/OpenInFormFill';")
 anchor = '      {file && (\n        <div className="space-y-4">\n          {/* File summary & mode switcher */}'
 rep(E, anchor, '''      {file && APP_MODE && (
         <AppFullscreen
@@ -206,6 +206,7 @@ rep(E, anchor, '''      {file && APP_MODE && (
           onClose={handleClear}
           actions={
             <div className="flex shrink-0 items-center rounded-full bg-[hsl(var(--color-muted))] p-1 text-xs font-semibold">
+              <OpenInFormFillButton file={file} locale={locale} />
               <button
                 type="button"
                 onClick={() => setEditMode('direct')}
@@ -239,6 +240,7 @@ rep(E, anchor, '''      {file && APP_MODE && (
                 allow="local-fonts"
                 onLoad={handleIframeLoad}
               />
+              {isEditorReady && <FormFillHint file={file} locale={locale} />}
               {!isEditorReady && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 dark:bg-gray-950/80">
                   <div className="h-9 w-9 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />

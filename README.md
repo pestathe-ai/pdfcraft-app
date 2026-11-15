@@ -12,6 +12,11 @@ OCR e molto altro. Tutto gira **sul telefono**: i tuoi file non vengono caricati
 2. Apri il file scaricato → consenti l'installazione da questa fonte → **Installa**
    (se Play Protect avvisa: *Installa comunque*).
 
+## Novità 0.6.1
+- In **Modifica PDF** c'è la voce **Compila** accanto a *Testo* e *Annota*. Se il documento è un modulo
+  (righe, puntini o caselle da riempire), compare anche un avviso che lo apre in *Compila* con un tocco:
+  *Testo* serve a cambiare le scritte già stampate, non a riempire gli spazi vuoti.
+
 ## Novità 0.6
 - **Compila modulo rifatto sul modello di Adobe Fill & Sign e Xodo**:
   - **scrivi direttamente sul foglio**: il cursore compare nel campo e sopra la tastiera c'è una barra con
