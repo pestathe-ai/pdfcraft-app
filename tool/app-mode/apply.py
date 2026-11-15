@@ -682,6 +682,36 @@ else:
          + s[close:].replace("                {t('brand')}", "                {APP_MODE ? BRAND.app : t('brand')}", 1))
     write(H, s)
 
+# ---------------------------------------------------------------- Compila modulo: nuova interfaccia (zoom + campi rilevati)
+FF = 'src/components/tools/form-filler/FormFillerTool.tsx'
+add_import(FF, "import { APP_MODE } from '@/lib/app-mode';\nimport { FormFill } from '@/components/app/FormFill';\nimport { useLocale } from 'next-intl';")
+rep(FF, "  const cancelledRef = useRef(false);\n", "  const cancelledRef = useRef(false);\n  const uiLocale = useLocale();\n")
+rep(FF, """      setFile(selectedFile);
+      setError(null);
+      setResult(null);
+""", """      setFile(selectedFile);
+      setError(null);
+      setResult(null);
+      if (APP_MODE) return;
+""")
+rep(FF, """          label="Upload PDF Form"
+          description="Drag and drop a PDF form here.\"""", """          label={APP_MODE ? (uiLocale === 'it' ? 'Scegli il modulo PDF da compilare' : 'Choose the PDF form') : 'Upload PDF Form'}
+          description={APP_MODE ? (uiLocale === 'it' ? 'Funziona con i moduli compilabili e anche con i PDF normali: trova da solo righe, puntini, caselle e tabelle.' : 'Works with fillable forms and plain PDFs: lines, dots, boxes and tables are detected.') : 'Drag and drop a PDF form here.'}""")
+rep(FF, "      {file && (\n        <>", """      {file && APP_MODE && (
+        <FormFill
+          file={file}
+          locale={uiLocale}
+          onClose={() => {
+            setFile(null);
+            setResult(null);
+            setFields([]);
+          }}
+        />
+      )}
+
+      {file && !APP_MODE && (
+        <>""")
+
 # ---------------------------------------------------------------- esito
 if errors:
     print('ERRORI applicando la modalità app:')

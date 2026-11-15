@@ -12,6 +12,16 @@ OCR e molto altro. Tutto gira **sul telefono**: i tuoi file non vengono caricati
 2. Apri il file scaricato → consenti l'installazione da questa fonte → **Installa**
    (se Play Protect avvisa: *Installa comunque*).
 
+## Novità 0.5
+- **Compila modulo rifatto per il telefono**: il documento si vede a tutto schermo, si ingrandisce col pizzico,
+  col doppio tocco o con i pulsanti, e gli spazi da compilare sono evidenziati in giallo.
+- **Trova da solo i campi** anche nei PDF "normali" e scansionati: righe, puntini, caselle, celle vuote di
+  tabella e riquadri; il nome del campo viene preso dal testo vicino ("Cognome", "Telefono · Valore").
+- Tocchi un campo: si ingrandisce e si apre un riquadro grande per scrivere, con *Precedente/Successivo*,
+  tastiera adatta (numeri, email), pulsante *Oggi* per le date. Caselle con un tocco, firme col dito.
+- *Aa Testo*, *Spunta* e *Firma* per scrivere dove non c'è un campo. La compilazione a metà viene ripresa.
+- "Compila" tra le azioni rapide della home e tra le azioni per i PDF in *Converti*.
+
 ## Novità 0.4
 - Nuovo nome **D. Docs lab** e nuova icona (marchio **Dom Studio**, stile "Domus": la casa dei documenti).
 - Colori del marchio nell'interfaccia; i file salvati vanno in **Download › D. Docs lab**.

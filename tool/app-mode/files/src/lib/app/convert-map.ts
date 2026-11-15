@@ -107,6 +107,7 @@ export const FROM_PDF: { slug: string; it: string; en: string; hint: { it: strin
 
 /** Altre azioni utili quando si apre un PDF. */
 export const PDF_ACTIONS: { slug: string; it: string; en: string }[] = [
+  { slug: 'form-filler', it: 'Compila modulo', en: 'Fill form' },
   { slug: 'edit-pdf', it: 'Modifica', en: 'Edit' },
   { slug: 'sign-pdf', it: 'Firma', en: 'Sign' },
   { slug: 'pdf-reader', it: 'Leggi', en: 'Read' },

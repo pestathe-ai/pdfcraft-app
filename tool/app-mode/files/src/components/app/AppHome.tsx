@@ -21,7 +21,7 @@ const QUICK: { slug: string; it: string; en: string }[] = [
   { slug: 'image-to-pdf', it: 'Foto in PDF', en: 'Photos to PDF' },
   { slug: 'pdf-reader', it: 'Leggi', en: 'Read' },
   { slug: 'rotate-pdf', it: 'Ruota', en: 'Rotate' },
-  { slug: 'add-watermark', it: 'Filigrana', en: 'Watermark' },
+  { slug: 'form-filler', it: 'Compila', en: 'Fill form' },
 ];
 
 /** Pagina iniziale in modalità app: azioni rapide invece della pagina promozionale del sito. */
