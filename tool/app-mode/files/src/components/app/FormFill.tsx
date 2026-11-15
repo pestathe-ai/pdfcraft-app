@@ -100,6 +100,17 @@ const GAP = 12; // spazio tra le pagine (px a zoom 1)
 const PAD = 10; // margine attorno alle pagine (px a zoom 1)
 const INK = '#0D1F73'; // inchiostro "penna blu"
 const INK_RGB = [0.05, 0.12, 0.45] as const;
+/**
+ * Campi scritti sul foglio: sempre trasparenti e chiari, anche col tema scuro del telefono
+ * (lo stile globale degli input darebbe uno sfondo nero con testo blu scuro: illeggibile).
+ */
+const ON_PAPER: React.CSSProperties = {
+  backgroundColor: 'transparent',
+  colorScheme: 'light',
+  minHeight: 0,
+  maxWidth: 'none',
+  WebkitTextFillColor: INK,
+};
 const BRAND = '#1D3A8A';
 const PROFILE_KEY = 'ddocs-profile';
 
@@ -1377,7 +1388,7 @@ export function FormFill({ file, onClose, locale }: { file: File; onClose: () =>
                                 spellCheck={false}
                                 aria-label={label(f)}
                                 className="absolute inset-0 m-0 h-full w-full border-0 bg-transparent p-0 outline-none"
-                                style={{ font: 'inherit', fontSize: fontPx, color: INK, paddingLeft: 2 * scale, caretColor: BRAND }}
+                                style={{ ...ON_PAPER, font: 'inherit', fontSize: fontPx, color: INK, paddingLeft: 2 * scale, caretColor: BRAND }}
                               />
                             ) : f.kind === 'multiline' && isSel ? (
                               <textarea
@@ -1387,7 +1398,7 @@ export function FormFill({ file, onClose, locale }: { file: File; onClose: () =>
                                 onChange={(e) => setValue(f, e.target.value)}
                                 aria-label={label(f)}
                                 className="absolute inset-0 m-0 h-full w-full resize-none border-0 bg-transparent outline-none"
-                                style={{ font: 'inherit', fontSize: fontPx, lineHeight: 1.2, color: INK, padding: `${4 * scale}px ${3 * scale}px`, caretColor: BRAND }}
+                                style={{ ...ON_PAPER, font: 'inherit', fontSize: fontPx, lineHeight: 1.2, color: INK, padding: `${4 * scale}px ${3 * scale}px`, caretColor: BRAND }}
                               />
                             ) : (f.kind === 'text' || f.kind === 'choice') && f.value ? (
                               <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center whitespace-pre" style={{ paddingLeft: 2 * scale }}>

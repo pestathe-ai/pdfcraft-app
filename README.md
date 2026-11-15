@@ -16,6 +16,7 @@ OCR e molto altro. Tutto gira **sul telefono**: i tuoi file non vengono caricati
 - In **Modifica PDF** c'è la voce **Compila** accanto a *Testo* e *Annota*. Se il documento è un modulo
   (righe, puntini o caselle da riempire), compare anche un avviso che lo apre in *Compila* con un tocco:
   *Testo* serve a cambiare le scritte già stampate, non a riempire gli spazi vuoti.
+- **Compila**: col tema scuro del telefono il campo selezionato diventava nero e non si vedeva il testo; ora resta chiaro.
 
 ## Novità 0.6
 - **Compila modulo rifatto sul modello di Adobe Fill & Sign e Xodo**:
